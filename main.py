@@ -5,6 +5,12 @@ from sklearn.metrics import accuracy_score
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
+from tensorflow.keras.callbacks import Callback
+
+# Custom callback to display live metrics after each epoch
+class LiveMetrics(Callback):
+    def on_epoch_end(self, epoch, logs=None):
+        print(f"Epoch {epoch + 1}: Loss = {logs['loss']:.4f}, Accuracy = {logs['accuracy']:.4f}")
 
 def run():
     # Load the dataset
@@ -33,12 +39,12 @@ def run():
     # Compile the model
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
-    # Train the model
-    model.fit(X_train, y_train, epochs=10, batch_size=32, verbose=1)
+    # Train the model with live metrics
+    model.fit(X_train, y_train, epochs=10, batch_size=32, verbose=0, callbacks=[LiveMetrics()])
 
     # Evaluate the model
     loss, accuracy = model.evaluate(X_test, y_test, verbose=0)
-    print(f'Accuracy: {accuracy:.2f}')
+    print(f'Final Test Accuracy: {accuracy:.2f}')
 
 if __name__ == '__main__':
     run()
