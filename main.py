@@ -47,4 +47,4 @@ def run():
     print(f'Final Test Accuracy: {accuracy:.2f}')
 
 if __name__ == '__main__':
-    run()
+    run();
